@@ -34,7 +34,7 @@
     "homepage": "https://github.com/goodm4ven/PACKAGE_LARAVEL_hot-refresh#readme",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/goodm4ven/PACKAGE_LARAVEL_hot-refresh.git"
+        "url": "https://github.com/goodm4ven/PACKAGE_LARAVEL_hot-refresh.git"
     },
     "bugs": {
         "url": "https://github.com/goodm4ven/PACKAGE_LARAVEL_hot-refresh/issues"
