@@ -11,6 +11,8 @@ It avoids unnecessary full page reloads by:
 - morph-reloading Blade scene fragments when needed
 - refreshing Livewire components when possible
 
+https://github.com/user-attachments/assets/544de166-7d02-44eb-9465-d8a2974d0abf
+
 
 ## Installation
 
