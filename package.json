@@ -31,13 +31,13 @@
     ],
     "author": "GoodM4ven <goodm4ven@proton.me>",
     "license": "MIT",
-    "homepage": "https://github.com/goodm4ven/PACKAGE_LARAVEL_hot-refresh#readme",
+    "homepage": "https://github.com/GoodM4ven/PACKAGE_LARAVEL_hot-refresh#readme",
     "repository": {
         "type": "git",
-        "url": "https://github.com/goodm4ven/PACKAGE_LARAVEL_hot-refresh.git"
+        "url": "https://github.com/GoodM4ven/PACKAGE_LARAVEL_hot-refresh"
     },
     "bugs": {
-        "url": "https://github.com/goodm4ven/PACKAGE_LARAVEL_hot-refresh/issues"
+        "url": "https://github.com/GoodM4ven/PACKAGE_LARAVEL_hot-refresh/issues"
     },
     "engines": {
         "node": ">=18"
