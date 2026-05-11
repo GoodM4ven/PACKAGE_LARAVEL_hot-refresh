@@ -74,12 +74,19 @@ jobs:
             - name: Verify package
               run: npm run check
 
-            - name: Publish (with NPM_TOKEN)
-              if: env.HAS_NPM_TOKEN == 'true'
-              run: npm publish --provenance --access public
+            - name: Publish (trusted publishing)
+              id: publish_trusted
+              continue-on-error: true
+              run: npm publish --provenance --access public --ignore-scripts
+
+            - name: Publish (with NPM_TOKEN fallback)
+              if: steps.publish_trusted.outcome != 'success' && env.HAS_NPM_TOKEN == 'true'
+              run: npm publish --provenance --access public --ignore-scripts
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-            - name: Publish (trusted publishing)
-              if: env.HAS_NPM_TOKEN != 'true'
-              run: npm publish --provenance --access public
+            - name: Fail if no publish method succeeded
+              if: steps.publish_trusted.outcome != 'success' && env.HAS_NPM_TOKEN != 'true'
+              run: |
+                  echo "Trusted publishing failed and NPM_TOKEN fallback is not configured."
+                  exit 1
