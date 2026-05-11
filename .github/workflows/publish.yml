@@ -61,6 +61,13 @@ jobs:
                     exit 1
                   fi
 
+                  CURRENT_VERSION="$(node -p "require('./package.json').version")"
+
+                  if [ "$CURRENT_VERSION" = "$CLEAN_VERSION" ]; then
+                    echo "Version already set to $CLEAN_VERSION; skipping npm version bump."
+                    exit 0
+                  fi
+
                   npm version "$CLEAN_VERSION" --no-git-tag-version
                   echo "Publishing version: $CLEAN_VERSION"
 
