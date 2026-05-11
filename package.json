@@ -1,0 +1,58 @@
+{
+    "name": "laravel-hot-refresh",
+    "version": "1.0.0",
+    "description": "Vite hot refresh plugin/runtime for Laravel Blade + Livewire updates without disruptive full page reloads.",
+    "type": "module",
+    "main": "./src/index.js",
+    "module": "./src/index.js",
+    "exports": {
+        ".": "./src/index.js"
+    },
+    "scripts": {
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "format": "prettier . --write",
+        "format:check": "prettier . --check",
+        "check": "npm run lint && npm run format:check && npm pack --dry-run",
+        "prepublishOnly": "npm run check"
+    },
+    "files": [
+        "src",
+        "README.md",
+        "LICENSE"
+    ],
+    "keywords": [
+        "laravel",
+        "vite",
+        "livewire",
+        "blade",
+        "hmr",
+        "hot-refresh"
+    ],
+    "author": "GoodM4ven <goodm4ven@proton.me>",
+    "license": "MIT",
+    "homepage": "https://github.com/goodm4ven/PACKAGE_LARAVEL_hot-refresh#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/goodm4ven/PACKAGE_LARAVEL_hot-refresh.git"
+    },
+    "bugs": {
+        "url": "https://github.com/goodm4ven/PACKAGE_LARAVEL_hot-refresh/issues"
+    },
+    "engines": {
+        "node": ">=18"
+    },
+    "peerDependencies": {
+        "vite": "^5.0.0 || ^6.0.0"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.39.1",
+        "eslint": "^9.39.1",
+        "globals": "^16.4.0",
+        "prettier": "^3.6.2"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "packageManager": "npm@11.6.2"
+}

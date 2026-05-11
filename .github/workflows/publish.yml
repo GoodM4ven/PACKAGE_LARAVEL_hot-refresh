@@ -1,0 +1,78 @@
+name: Publish to npm
+
+on:
+    workflow_dispatch:
+        inputs:
+            version:
+                description: 'Optional semver (or v-prefixed semver) to publish'
+                required: false
+                type: string
+    release:
+        types: [published]
+
+permissions:
+    contents: read
+    id-token: write
+
+jobs:
+    publish:
+        runs-on: ubuntu-latest
+        env:
+            HAS_NPM_TOKEN: ${{ secrets.NPM_TOKEN != '' }}
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: 22
+                  registry-url: 'https://registry.npmjs.org'
+                  cache: npm
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Sync package version from release tag/input
+              shell: bash
+              env:
+                  EVENT_NAME: ${{ github.event_name }}
+                  RELEASE_TAG: ${{ github.event.release.tag_name }}
+                  INPUT_VERSION: ${{ github.event.inputs.version }}
+              run: |
+                  RAW_VERSION=""
+
+                  if [ "$EVENT_NAME" = "release" ]; then
+                    RAW_VERSION="$RELEASE_TAG"
+                  else
+                    RAW_VERSION="$INPUT_VERSION"
+                  fi
+
+                  if [ -z "$RAW_VERSION" ]; then
+                    echo "No version override provided; using package.json version."
+                    exit 0
+                  fi
+
+                  CLEAN_VERSION="${RAW_VERSION#v}"
+
+                  if ! [[ "$CLEAN_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]]; then
+                    echo "Invalid release/input version: $RAW_VERSION"
+                    exit 1
+                  fi
+
+                  npm version "$CLEAN_VERSION" --no-git-tag-version
+                  echo "Publishing version: $CLEAN_VERSION"
+
+            - name: Verify package
+              run: npm run check
+
+            - name: Publish (with NPM_TOKEN)
+              if: env.HAS_NPM_TOKEN == 'true'
+              run: npm publish --provenance --access public
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+            - name: Publish (trusted publishing)
+              if: env.HAS_NPM_TOKEN != 'true'
+              run: npm publish --provenance --access public
