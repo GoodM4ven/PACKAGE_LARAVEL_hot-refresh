@@ -1,7 +1,7 @@
 <div align="center">بسم الله الرحمن الرحيم</div>
 <div align="left">
 
-# Laravel Blade & Livewire Hot Refresh
+# Laravel Blade & Livewire Hot-Refresh
 
 Inspired by [the famous plugin](https://github.com/defstudio/vite-livewire-plugin), this new Vite hot refresh plugin/runtime for Laravel apps supports both **pure Blade AND Livewire** hot-refreshes!
 
