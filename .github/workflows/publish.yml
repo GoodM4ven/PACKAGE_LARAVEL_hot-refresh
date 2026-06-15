@@ -15,13 +15,10 @@ on:
 
 permissions:
     contents: read
-    id-token: write
 
 jobs:
     publish:
         runs-on: ubuntu-latest
-        env:
-            HAS_NPM_TOKEN: ${{ secrets.NPM_TOKEN != '' }}
 
         steps:
             - name: Checkout
@@ -91,21 +88,9 @@ jobs:
             - name: Verify package
               run: npm run check
 
-            - name: Publish (trusted publishing)
-              id: publish_trusted
-              continue-on-error: true
-              run: npm publish --access public --ignore-scripts
-
-            - name: Publish (with NPM_TOKEN fallback)
-              if: steps.publish_trusted.outcome != 'success' && env.HAS_NPM_TOKEN == 'true'
+            - name: Publish to npm (using NPM_TOKEN)
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
               run: |
                   npm config set //registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}
                   NPM_CONFIG_PROVENANCE=false npm publish --access public --ignore-scripts
-
-            - name: Fail if no publish method succeeded
-              if: steps.publish_trusted.outcome != 'success' && env.HAS_NPM_TOKEN != 'true'
-              run: |
-                  echo "Trusted publishing failed and NPM_TOKEN fallback is not configured."
-                  exit 1
