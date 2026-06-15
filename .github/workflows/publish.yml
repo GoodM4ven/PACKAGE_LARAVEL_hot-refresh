@@ -96,6 +96,11 @@ jobs:
               continue-on-error: true
               run: npm publish --access public --ignore-scripts
 
+            - name: Authenticate with npm token
+              if: steps.publish_trusted.outcome != 'success' && env.HAS_NPM_TOKEN == 'true'
+              run: |
+                  npm config set //registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}
+
             - name: Publish (with NPM_TOKEN fallback)
               if: steps.publish_trusted.outcome != 'success' && env.HAS_NPM_TOKEN == 'true'
               run: NPM_CONFIG_PROVENANCE=false npm publish --access public --ignore-scripts
